@@ -47,8 +47,8 @@ class _BubbleMenuScreenState extends State<BubbleMenuScreen> {
     final double maxBubbleWidth = screenSize.width / 4;
     final double itemRadius = maxBubbleWidth * 0.47;
     final Random random = Random();
-    for (int rowIndex = 0; rowIndex < 20; rowIndex++) {
-      final int maxRowItems = rowIndex.isEven ? 20 : 19;
+    for (int rowIndex = 0; rowIndex < 7; rowIndex++) {
+      final int maxRowItems = rowIndex.isEven ? 8 : 7;
       for (int y = 0; y < maxRowItems; y++) {
         final double offsetWidth = rowIndex.isEven ? 0 : itemRadius;
         final Offset position = Offset(
@@ -92,7 +92,18 @@ class _BubbleMenuScreenState extends State<BubbleMenuScreen> {
       child: Scaffold(
         body: GestureDetector(
           onPanUpdate: (panUpdateData) {
-            updatePosition(panUpdateData.delta);
+            // updatePosition(panUpdateData.delta);
+            double limitX = (position.dx + panUpdateData.delta.dx)
+                .clamp(0, screenSize.width - (screenSize.width / 4) * 0.47)
+                .toDouble();
+
+            double limitY = (position.dy + panUpdateData.delta.dy)
+                .clamp(0, screenSize.height - (screenSize.height / 4) * 0.47)
+                .toDouble();
+
+            position = Offset(limitX, limitY);
+
+            setState(() {});
           },
           child: Container(
             color: Colors.black,
